@@ -1,0 +1,53 @@
+{
+  "generated": "2026-11-27T00:21:46.016Z",
+  "magazines": [
+    {
+      "file": "data/01-bala-kanda.pdf",
+      "name": "01-bala-kanda.pdf",
+      "title": "బాల కాండము",
+      "en": "Bala Kanda",
+      "size": 1096619,
+      "date": "2026-11-26T18:19:10-06:00"
+    },
+    {
+      "file": "data/02-ayodhya-kanda-part-1.pdf",
+      "name": "02-ayodhya-kanda-part-1.pdf",
+      "title": "అయోధ్య కాండము · ప్రథమ భాగము",
+      "en": "Ayodhya Kanda, Part 1",
+      "size": 916757,
+      "date": "2026-11-26T18:19:10-06:00"
+    },
+    {
+      "file": "data/03-ayodhya-kanda-part-2.pdf",
+      "name": "03-ayodhya-kanda-part-2.pdf",
+      "title": "అయోధ్య కాండము · ద్వితీయ భాగము",
+      "en": "Ayodhya Kanda, Part 2",
+      "size": 844423,
+      "date": "2026-11-26T18:19:10-06:00"
+    },
+    {
+      "file": "data/04-aranya-kishkindha-sundara-kanda.pdf",
+      "name": "04-aranya-kishkindha-sundara-kanda.pdf",
+      "title": "అరణ్య · కిష్కింధ · సుందర కాండములు",
+      "en": "Aranya, Kishkindha and Sundara Kanda",
+      "size": 1760300,
+      "date": "2026-11-26T18:19:10-06:00"
+    },
+    {
+      "file": "data/05-yuddha-kanda-part-1.pdf",
+      "name": "05-yuddha-kanda-part-1.pdf",
+      "title": "యుద్ధ కాండము · ప్రథమ భాగము",
+      "en": "Yuddha Kanda, Part 1",
+      "size": 1149202,
+      "date": "2026-11-26T18:19:10-06:00"
+    },
+    {
+      "file": "data/06-yuddha-kanda-part-2.pdf",
+      "name": "06-yuddha-kanda-part-2.pdf",
+      "title": "యుద్ధ కాండము · ద్వితీయ భాగము",
+      "en": "Yuddha Kanda, Part 2",
+      "size": 649901,
+      "date": "2026-11-26T18:19:10-06:00"
+    }
+  ]
+}

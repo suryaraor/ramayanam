@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="te">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>శ్రీమద్రామాయణము · Srimad Ramayanam</title>
+  <meta name="description" content="శ్రీమద్రామాయణము తెలుగులో, కాండము వారీగా. Srimad Ramayanam in Telugu: read every part full screen, download it, or share it.">
+  <meta name="theme-color" content="#f6ecdc" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16130f" media="(prefers-color-scheme: dark)">
+  <meta property="og:title" content="శ్రీమద్రామాయణము · Srimad Ramayanam">
+  <meta property="og:description" content="శ్రీమద్రామాయణము తెలుగులో, కాండము వారీగా. Srimad Ramayanam in Telugu: read every part full screen, download it, or share it.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23c25a0c'/%3E%3Cpath d='M12 50C22 16 42 16 52 50' fill='none' stroke='%23fff' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M12 50H52M32 52V22M26 29l6-8 6 8' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600&family=Ramabhadra&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <div id="home" class="home">
+    <header class="masthead">
+      <div class="wrap">
+        <p class="eyebrow">వాల్మీకి రామాయణము · తెలుగు వచనము</p>
+        <h1 class="title">శ్రీమద్రామాయణము</h1>
+        <p class="lede">బాల కాండము నుండి యుద్ధ కాండము వరకు, కాండము వారీగా. ఏ భాగాన్నైనా తాకితే పూర్తి తెరపై చదవవచ్చు, డౌన్‌లోడ్ చేసుకోవచ్చు, అందరితో పంచుకోవచ్చు.<br><span class="lede-en">Srimad Ramayanam in Telugu prose, kanda by kanda. Tap a part to read it full screen, save it, or share it.</span></p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="shelf-head">
+        <h2>భాగాలు <span class="h-en">Parts</span></h2>
+        <span id="count" class="count"></span>
+      </div>
+      <ul id="grid" class="grid" aria-live="polite"></ul>
+      <div id="empty" class="empty" hidden>
+        <p class="empty-title">ఇంకా భాగాలు లేవు</p>
+        <p>New parts will appear here as soon as they're added.</p>
+      </div>
+      <div id="error" class="empty" hidden>
+        <p class="empty-title">భాగాలను తెరవలేకపోయాం</p>
+        <p>Check your connection and <a href="" onclick="location.reload();return false">try again</a>.</p>
+      </div>
+    </main>
+
+    <footer class="foot wrap">
+      <p>శ్రీ రామ జయ రామ జయ జయ రామ · Free to read and share with anyone.</p>
+    </footer>
+  </div>
+
+  <!-- Full-screen reader -->
+  <section id="viewer" class="viewer" hidden aria-label="Ramayanam reader">
+    <div id="stage" class="stage">
+      <div id="scroller" class="scroller">
+        <div id="book" class="book">
+          <div id="leafBase" class="leaf base"></div>
+          <div id="leafFlip" class="leaf flipper">
+            <div id="flipFront" class="face front"></div>
+            <div class="face back"></div>
+          </div>
+        </div>
+      </div>
+      <div class="edge edge-l" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" /></svg>
+      </div>
+      <div class="edge edge-r" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" /></svg>
+      </div>
+      <div id="spinner" class="spinner" hidden></div>
+    </div>
+
+    <div id="hud" class="hud">
+      <div class="hud-top">
+        <button class="icon-btn" data-act="home" aria-label="All parts" title="అన్ని భాగాలు">
+          <svg viewBox="0 0 24 24"><path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v4H4zM14 15h6v4h-6z"/></svg>
+        </button>
+        <div class="hud-title">
+          <span id="vTitle"></span>
+          <span id="vPage" class="hud-page"></span>
+        </div>
+        <button class="icon-btn" data-act="sound" aria-label="Sound" title="Sound on/off">
+          <svg class="snd-on" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></svg>
+          <svg class="snd-off" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM17 9l5 6M22 9l-5 6"/></svg>
+        </button>
+        <button class="icon-btn" data-act="download" aria-label="Download" title="Download">
+          <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+        </button>
+        <button class="icon-btn" data-act="share" aria-label="Share" title="Share">
+          <svg viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4M6 12v7h12v-7"/></svg>
+        </button>
+        <button class="icon-btn fs-btn" data-act="fullscreen" aria-label="Full screen" title="Full screen">
+          <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+        </button>
+      </div>
+      <div class="progress"><span id="progressBar"></span></div>
+    </div>
+
+    <div id="coach" class="coach" hidden>
+      <div class="coach-zone"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg><span>ఎడమ వైపు తాకితే<br>ముందటి పేజీ</span></div>
+      <div class="coach-zone mid"><svg viewBox="0 0 48 24"><path d="M44 12H6M14 4l-8 8 8 8"/></svg><span>కుడి నుంచి ఎడమకు స్వైప్<br>అన్ని భాగాలకు</span></div>
+      <div class="coach-zone"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg><span>కుడి వైపు తాకితే<br>తరువాతి పేజీ</span></div>
+      <p class="coach-go">రెండు వేళ్లతో పెద్దది చేయవచ్చు<br>మొదలుపెట్టడానికి ఎక్కడైనా తాకండి</p>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
