@@ -1,14 +1,14 @@
 {
-  "generated": "2026-11-27T01:48:30.256Z",
+  "generated": "2026-11-27T02:02:24.276Z",
   "magazines": [
     {
       "file": "data/01-bala-kanda.pdf",
       "name": "01-bala-kanda.pdf",
       "title": "బాల కాండము",
       "en": "Bala Kanda",
-      "pages": 104,
+      "pages": 111,
       "cover": "covers/01-bala-kanda.jpg",
-      "size": 1096619,
+      "size": 1433642,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -18,7 +18,7 @@
       "en": "Ayodhya Kanda, Part 1",
       "pages": 88,
       "cover": "covers/02-ayodhya-kanda-part-1.jpg",
-      "size": 916757,
+      "size": 915735,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {

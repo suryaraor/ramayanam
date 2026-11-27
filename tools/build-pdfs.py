@@ -63,6 +63,10 @@ def kind(t):
         return 'h2'
     if len(t) < 30 and 'రామాయణ' in t:
         return 'eyebrow'
+    if len(t) < 60:   # verse lines (prose paragraphs are longer)
+        return 'verse'
+    if t.startswith('తా.'):   # meaning (తాత్పర్యము) of the verse above
+        return 'meaning'
     if len(t) < 120 and not re.search(r'(\.|రి)\W*$', t):   # short lines that don't end like a prose sentence
         return 'verse'
     return 'p'
@@ -101,6 +105,8 @@ def body_html(paras, title):
                 out.append(f'<p class="eyebrow">{e}</p>')
         elif k == 'end':
             out.append(f'<p class="end">{e}</p>')
+        elif k == 'meaning':
+            out.append(f'<p class="meaning">{e}</p>')
         elif k == 'chant':
             out.append(f'<p class="chant">{e}</p>')
         else:
@@ -132,6 +138,7 @@ p { margin: 0 0 4.2mm; text-align: start; orphans: 2; widows: 2; }
 .verse { margin: 5mm 2mm 6mm; padding: 3.5mm 4mm; border-left: 2.5pt solid #e5953a; background: #fdf3e3; color: #6b3410; font-size: 13.5pt; line-height: 1.8; text-align: center; break-inside: avoid; }
 .end { text-align: center; font-family: 'Ramabhadra', 'Noto Sans Telugu', sans-serif; color: #a8460c; font-size: 16pt; margin: 9mm 0 3mm; }
 .end::before { content: '❀  '; } .end::after { content: '  ❀'; }
+.meaning { margin: -2mm 2mm 6mm; padding: 0 4mm; color: #5a3d22; font-size: 13pt; border-left: 2.5pt solid #f3d3a8; }
 .chant { text-align: center; color: #c06a1c; font-size: 12pt; letter-spacing: .03em; }
 """
 
