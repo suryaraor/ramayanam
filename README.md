@@ -22,7 +22,7 @@ Ayodhya Kanda kept for reference; parts 2 and 3 above are the final text.
 
 1. Put the Word file in `sources/` with a number first, for example `07-uttara-kanda.docx`.
 2. Add its Telugu and English names to `js/books.js`.
-3. Make the PDF (needs Python 3 and Google Chrome or Microsoft Edge):
+3. Make the PDF and its cover picture (needs Python 3, Google Chrome or Microsoft Edge, and poppler's `pdftoppm`):
    ```
    python tools/build-pdfs.py                  # every part
    python tools/build-pdfs.py 07-uttara-kanda  # just one
@@ -61,9 +61,10 @@ js/app.js                  catalog, PDF rendering, page turns, gestures
 js/books.js                Telugu and English name of each part
 sw.js                      offline reading
 vendor/pdfjs/              PDF.js 4.10.38 legacy build (Mozilla, Apache-2.0); works on older iPads and iPhones
-tools/build-pdfs.py        Word files in sources/ -> PDFs in data/
+tools/build-pdfs.py        Word files in sources/ -> PDFs in data/ and cover pictures in covers/
 tools/build-manifest.mjs   writes magazines.json from data/*.pdf
-magazines.json             the list of parts shown on the home page
+magazines.json             the list of parts shown on the home page (also copied into index.html as
+                           plain links, so older iPads that can't run app.js still see every part)
 sources/                   original Word files
 data/                      the PDFs readers see
 ```

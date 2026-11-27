@@ -14,6 +14,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@400;500;600&family=Ramabhadra&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Shows script errors at the bottom of the page (helps find problems on phones and tablets without a console)
+    window.onerror = function (msg, src, line) {
+      var el = document.getElementById('jsError');
+      if (el) { el.hidden = false; el.textContent += 'Error: ' + msg + ' (' + String(src || '').split('/').pop() + ':' + line + ')
+'; }
+    };
+  </script>
   <script type="module" src="js/app.js"></script>
 </head>
 <body>
@@ -31,7 +39,28 @@
         <h2>భాగాలు <span class="h-en">Parts</span></h2>
         <span id="count" class="count"></span>
       </div>
-      <ul id="grid" class="grid" aria-live="polite"></ul>
+      <ul id="grid" class="grid" aria-live="polite">
+        <!-- shelf:start -->
+        <li class="card"><a class="cover" href="data/01-bala-kanda.pdf"><img src="covers/01-bala-kanda.jpg" alt=""></a>
+          <div class="meta"><h3>బాల కాండము</h3><p class="sub">Bala Kanda · 104 పేజీలు · 1.0 MB</p>
+          <div class="actions"><a class="btn primary" href="data/01-bala-kanda.pdf"><span class="lbl">చదవండి</span></a></div></div></li>
+        <li class="card"><a class="cover" href="data/02-ayodhya-kanda-part-1.pdf"><img src="covers/02-ayodhya-kanda-part-1.jpg" alt=""></a>
+          <div class="meta"><h3>అయోధ్య కాండము · ప్రథమ భాగము</h3><p class="sub">Ayodhya Kanda, Part 1 · 88 పేజీలు · 895 KB</p>
+          <div class="actions"><a class="btn primary" href="data/02-ayodhya-kanda-part-1.pdf"><span class="lbl">చదవండి</span></a></div></div></li>
+        <li class="card"><a class="cover" href="data/03-ayodhya-kanda-part-2.pdf"><img src="covers/03-ayodhya-kanda-part-2.jpg" alt=""></a>
+          <div class="meta"><h3>అయోధ్య కాండము · ద్వితీయ భాగము</h3><p class="sub">Ayodhya Kanda, Part 2 · 71 పేజీలు · 825 KB</p>
+          <div class="actions"><a class="btn primary" href="data/03-ayodhya-kanda-part-2.pdf"><span class="lbl">చదవండి</span></a></div></div></li>
+        <li class="card"><a class="cover" href="data/04-aranya-kishkindha-sundara-kanda.pdf"><img src="covers/04-aranya-kishkindha-sundara-kanda.jpg" alt=""></a>
+          <div class="meta"><h3>అరణ్య · కిష్కింధ · సుందర కాండములు</h3><p class="sub">Aranya, Kishkindha and Sundara Kanda · 209 పేజీలు · 1.7 MB</p>
+          <div class="actions"><a class="btn primary" href="data/04-aranya-kishkindha-sundara-kanda.pdf"><span class="lbl">చదవండి</span></a></div></div></li>
+        <li class="card"><a class="cover" href="data/05-yuddha-kanda-part-1.pdf"><img src="covers/05-yuddha-kanda-part-1.jpg" alt=""></a>
+          <div class="meta"><h3>యుద్ధ కాండము · ప్రథమ భాగము</h3><p class="sub">Yuddha Kanda, Part 1 · 119 పేజీలు · 1.1 MB</p>
+          <div class="actions"><a class="btn primary" href="data/05-yuddha-kanda-part-1.pdf"><span class="lbl">చదవండి</span></a></div></div></li>
+        <li class="card"><a class="cover" href="data/06-yuddha-kanda-part-2.pdf"><img src="covers/06-yuddha-kanda-part-2.jpg" alt=""></a>
+          <div class="meta"><h3>యుద్ధ కాండము · ద్వితీయ భాగము</h3><p class="sub">Yuddha Kanda, Part 2 · 42 పేజీలు · 635 KB</p>
+          <div class="actions"><a class="btn primary" href="data/06-yuddha-kanda-part-2.pdf"><span class="lbl">చదవండి</span></a></div></div></li>
+        <!-- shelf:end -->
+      </ul>
       <div id="empty" class="empty" hidden>
         <p class="empty-title">ఇంకా భాగాలు లేవు</p>
         <p>New parts will appear here as soon as they're added.</p>
@@ -44,6 +73,7 @@
 
     <footer class="foot wrap">
       <p>శ్రీ రామ జయ రామ జయ జయ రామ · Free to read and share with anyone.</p>
+      <pre id="jsError" class="js-error" hidden></pre>
     </footer>
   </div>
 

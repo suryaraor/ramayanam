@@ -174,6 +174,12 @@ def main():
             subprocess.run([exe, '--headless=new', '--disable-gpu', '--no-pdf-header-footer', '--run-all-compositor-stages-before-draw',
                             '--virtual-time-budget=20000', f'--user-data-dir={Path(tmp) / "profile"}', f'--print-to-pdf={pdf}', page.as_uri()],
                            check=True, capture_output=True, timeout=300)
+            cover = ROOT / 'covers' / key
+            cover.parent.mkdir(exist_ok=True)
+            try:   # cover picture for the home page (needs poppler's pdftoppm)
+                subprocess.run(['pdftoppm', '-jpeg', '-jpegopt', 'quality=82', '-r', '110', '-f', '1', '-l', '1', '-singlefile', str(pdf), str(cover)], check=True)
+            except (OSError, subprocess.CalledProcessError):
+                print('  (pdftoppm not found: no cover image made)')
             print(f'{pdf.name}  {pdf.stat().st_size // 1024} KB')
 
 

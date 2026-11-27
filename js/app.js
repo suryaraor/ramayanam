@@ -1,4 +1,3 @@
-import * as pdfjsLib from '../vendor/pdfjs/pdf.min.mjs';
 import { BOOKS } from './books.js';
 
 /* ------------------------------------------------------------------ *
@@ -13,7 +12,15 @@ const CONFIG = {
 };
 
 const PDFJS_CDN = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/';
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('../vendor/pdfjs/pdf.worker.min.mjs', import.meta.url).href;
+// PDF.js loads only when needed, so the list of parts still shows if a browser can't run it.
+let pdfjsLib = null;
+async function pdfjs() {
+  if (!pdfjsLib) {
+    pdfjsLib = await import('../vendor/pdfjs/pdf.min.mjs');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('../vendor/pdfjs/pdf.worker.min.mjs', import.meta.url).href;
+  }
+  return pdfjsLib;
+}
 const PDF_OPTS = {
   cMapUrl: PDFJS_CDN + 'cmaps/',
   cMapPacked: true,
@@ -234,7 +241,7 @@ function renderCatalog() {
     li.innerHTML = `
       <button class="cover" type="button" aria-label="Read ${escapeHtml(m.title)}">
         <span class="cover-ph">${escapeHtml(m.title)}</span>
-        <canvas></canvas>
+        ${m.cover ? `<img src="${escapeHtml(m.cover)}" alt="" onload="this.previousElementSibling.remove()">` : '<canvas></canvas>'}
         ${isNew ? '<span class="new">New</span>' : ''}
       </button>
       <div class="meta">
@@ -289,8 +296,9 @@ function pumpCovers() {
 }
 
 async function renderCover(m) {
+  if (m.cover) return;   // a ready-made cover image is already showing
   const canvas = $('.cover canvas', m._el);
-  const doc = await pdfjsLib.getDocument({ url: fileUrl(m), disableAutoFetch: true, disableStream: true, ...PDF_OPTS }).promise;
+  const doc = await (await pdfjs()).getDocument({ url: fileUrl(m), disableAutoFetch: true, disableStream: true, ...PDF_OPTS }).promise;
   try {
     m.pages = doc.numPages;
     $('.sub', m._el).textContent = subline(m);
@@ -457,8 +465,15 @@ async function openViewer(m, startPage = 1) {
 
   if (!store.get('mag.coach')) $('#coach').hidden = false;
 
+  let lib;
+  try { lib = await pdfjs(); } catch (err) {
+    // This browser can't run PDF.js: open the PDF in the browser's own viewer instead
+    console.error(err);
+    location.href = fileUrl(m);
+    return;
+  }
   try {
-    const doc = await pdfjsLib.getDocument({ url: fileUrl(m), ...PDF_OPTS }).promise;
+    const doc = await lib.getDocument({ url: fileUrl(m), ...PDF_OPTS }).promise;
     if (gen !== V.gen) { doc.destroy(); return; }
     V.doc = doc;
     V.count = doc.numPages;

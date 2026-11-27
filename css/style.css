@@ -491,3 +491,6 @@ body.reading { overflow: hidden; }
 .lede-en { display: block; margin-top: 8px; font-size: .88em; opacity: .8; }
 .h-en { font-family: var(--sans); font-size: .55em; font-weight: 500; color: var(--ink-2); margin-left: 6px; }
 .card h3 { line-height: 1.5; }
+.cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+a.cover, a.btn { text-decoration: none; color: inherit; }
+.js-error { white-space: pre-wrap; font-size: 11px; color: var(--ink-2); margin-top: 12px; }

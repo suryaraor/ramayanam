@@ -1,53 +1,65 @@
 {
-  "generated": "2026-11-27T00:21:46.016Z",
+  "generated": "2026-11-27T01:48:30.256Z",
   "magazines": [
     {
       "file": "data/01-bala-kanda.pdf",
       "name": "01-bala-kanda.pdf",
       "title": "బాల కాండము",
       "en": "Bala Kanda",
+      "pages": 104,
+      "cover": "covers/01-bala-kanda.jpg",
       "size": 1096619,
-      "date": "2026-11-26T18:19:10-06:00"
+      "date": "2026-11-26T18:21:46-06:00"
     },
     {
       "file": "data/02-ayodhya-kanda-part-1.pdf",
       "name": "02-ayodhya-kanda-part-1.pdf",
       "title": "అయోధ్య కాండము · ప్రథమ భాగము",
       "en": "Ayodhya Kanda, Part 1",
+      "pages": 88,
+      "cover": "covers/02-ayodhya-kanda-part-1.jpg",
       "size": 916757,
-      "date": "2026-11-26T18:19:10-06:00"
+      "date": "2026-11-26T18:21:46-06:00"
     },
     {
       "file": "data/03-ayodhya-kanda-part-2.pdf",
       "name": "03-ayodhya-kanda-part-2.pdf",
       "title": "అయోధ్య కాండము · ద్వితీయ భాగము",
       "en": "Ayodhya Kanda, Part 2",
+      "pages": 71,
+      "cover": "covers/03-ayodhya-kanda-part-2.jpg",
       "size": 844423,
-      "date": "2026-11-26T18:19:10-06:00"
+      "date": "2026-11-26T18:21:46-06:00"
     },
     {
       "file": "data/04-aranya-kishkindha-sundara-kanda.pdf",
       "name": "04-aranya-kishkindha-sundara-kanda.pdf",
       "title": "అరణ్య · కిష్కింధ · సుందర కాండములు",
       "en": "Aranya, Kishkindha and Sundara Kanda",
+      "pages": 209,
+      "cover": "covers/04-aranya-kishkindha-sundara-kanda.jpg",
       "size": 1760300,
-      "date": "2026-11-26T18:19:10-06:00"
+      "date": "2026-11-26T18:21:46-06:00"
     },
     {
       "file": "data/05-yuddha-kanda-part-1.pdf",
       "name": "05-yuddha-kanda-part-1.pdf",
       "title": "యుద్ధ కాండము · ప్రథమ భాగము",
       "en": "Yuddha Kanda, Part 1",
+      "pages": 119,
+      "cover": "covers/05-yuddha-kanda-part-1.jpg",
       "size": 1149202,
-      "date": "2026-11-26T18:19:10-06:00"
+      "date": "2026-11-26T18:21:46-06:00"
     },
     {
       "file": "data/06-yuddha-kanda-part-2.pdf",
       "name": "06-yuddha-kanda-part-2.pdf",
       "title": "యుద్ధ కాండము · ద్వితీయ భాగము",
       "en": "Yuddha Kanda, Part 2",
+      "pages": 42,
+      "cover": "covers/06-yuddha-kanda-part-2.jpg",
       "size": 649901,
-      "date": "2026-11-26T18:19:10-06:00"
+      "date": "2026-11-26T18:21:46-06:00"
     }
   ]
 }
