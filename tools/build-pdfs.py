@@ -51,10 +51,19 @@ def paragraphs(docx):
     return paras
 
 
+# Invisible-to-readers page markers, used only by tools/corrections-page.py to find which page a word is on
+MARK = re.compile(r'(\d+)')
+
+
+def esc(t):
+    return MARK.sub(lambda m: f'<span class="mk">#{m.group(1)}#</span>', html.escape(t))
+
+
 CHANT = re.compile(r'^((జై\s*)?శ్రీ\s*రామ(్)?\s*)+$')
 
 
 def kind(t):
+    t = MARK.sub('', t)
     if CHANT.match(t):
         return 'chant'
     if len(t) < 45 and 'సమాప్త' in t:
@@ -84,7 +93,7 @@ def body_html(paras, title):
 
     def flush():
         if verse:
-            out.append('<blockquote class="verse">' + '<br>'.join(html.escape(v) for v in verse) + '</blockquote>')
+            out.append('<blockquote class="verse">' + '<br>'.join(esc(v) for v in verse) + '</blockquote>')
             verse.clear()
 
     first = True
@@ -94,7 +103,7 @@ def body_html(paras, title):
             verse.append(t)
             continue
         flush()
-        e = html.escape(t)
+        e = esc(t)
         if k == 'h2':
             if first and t.replace(' ', '')[:6] == title.replace(' ', '')[:6]:
                 first = False
@@ -139,6 +148,7 @@ p { margin: 0 0 4.2mm; text-align: start; orphans: 2; widows: 2; }
 .end { text-align: center; font-family: 'Ramabhadra', 'Noto Sans Telugu', sans-serif; color: #a8460c; font-size: 16pt; margin: 9mm 0 3mm; }
 .end::before { content: '❀  '; } .end::after { content: '  ❀'; }
 .meaning { margin: -2mm 2mm 6mm; padding: 0 4mm; color: #5a3d22; font-size: 13pt; border-left: 2.5pt solid #f3d3a8; }
+.mk { position: absolute; font: 5pt Arial, sans-serif; color: #000; }
 .chant { text-align: center; color: #c06a1c; font-size: 12pt; letter-spacing: .03em; }
 """
 

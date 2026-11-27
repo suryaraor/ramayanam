@@ -31,6 +31,22 @@ Ayodhya Kanda kept for reference; parts 2 and 3 above are the final text.
    `magazines.json`) and push to `gh-pages`. GitHub Pages serves the branch directly; the new
    part is live in a minute or two.
 
+## Spelling corrections
+
+`tools/proofread.py` fixes common spelling mistakes in the Word files (for example దశరధ → దశరథ,
+వసిష్ట → వసిష్ఠ, యుద్ద → యుద్ధ, శతృఘ్న → శత్రుఘ్న) and records each change in
+`tools/corrections.json`. `tools/corrections-page.py` finds the page of every change and writes
+the list to `corrections/index.html` (https://suryarao.in/ramayanam/corrections/).
+
+```
+python tools/proofread.py            # fix sources/*.docx
+python tools/build-pdfs.py           # rebuild the PDFs
+python tools/corrections-page.py     # page numbers + corrections page
+node tools/build-manifest.mjs
+```
+
+Add new rules to `RULES` in `tools/proofread.py`. Rerunning it only adds new changes to the list.
+
 ## What readers can do
 
 | Where | Action |
