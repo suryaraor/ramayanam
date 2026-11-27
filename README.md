@@ -60,7 +60,8 @@ css/style.css
 js/app.js                  catalog, PDF rendering, page turns, gestures
 js/books.js                Telugu and English name of each part
 sw.js                      offline reading
-vendor/pdfjs/              PDF.js 4.10.38 legacy build (Mozilla, Apache-2.0); works on older iPads and iPhones
+vendor/pdfjs/              PDF.js 4.10.38 legacy build (Mozilla, Apache-2.0)
+vendor/pdfjs-old/          PDF.js 3.11.174 legacy build, used when 4.10 can't run (older iPads and iPhones)
 tools/build-pdfs.py        Word files in sources/ -> PDFs in data/ and cover pictures in covers/
 tools/build-manifest.mjs   writes magazines.json from data/*.pdf
 magazines.json             the list of parts shown on the home page (also copied into index.html as

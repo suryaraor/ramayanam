@@ -16,10 +16,35 @@ const PDFJS_CDN = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/';
 let pdfjsLib = null;
 async function pdfjs() {
   if (!pdfjsLib) {
-    pdfjsLib = await import('../vendor/pdfjs/pdf.min.mjs');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL('../vendor/pdfjs/pdf.worker.min.mjs', import.meta.url).href;
+    try {
+      const lib = await import('../vendor/pdfjs/pdf.min.mjs');
+      lib.GlobalWorkerOptions.workerSrc = new URL('../vendor/pdfjs/pdf.worker.min.mjs', import.meta.url).href;
+      pdfjsLib = lib;
+    } catch (err) {
+      // Older iPads and iPhones (before iPadOS/iOS 16.4) can't run PDF.js 4; PDF.js 3.11 still works there
+      reportError('PDF.js 4: ' + (err && err.message || err));
+      pdfjsLib = await loadOldPdfjs();
+    }
   }
   return pdfjsLib;
+}
+function loadOldPdfjs() {
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = new URL('../vendor/pdfjs-old/pdf.min.js', import.meta.url).href;
+    s.onload = () => {
+      const lib = window.pdfjsLib;
+      if (!lib) { reject(new Error('PDF.js 3 did not load')); return; }
+      lib.GlobalWorkerOptions.workerSrc = new URL('../vendor/pdfjs-old/pdf.worker.min.js', import.meta.url).href;
+      resolve(lib);
+    };
+    s.onerror = () => reject(new Error('PDF.js 3 could not be downloaded'));
+    document.head.appendChild(s);
+  });
+}
+function reportError(msg) {
+  const el = document.getElementById('jsError');
+  if (el) { el.hidden = false; el.textContent += msg + '\n'; }
 }
 const PDF_OPTS = {
   cMapUrl: PDFJS_CDN + 'cmaps/',
@@ -469,28 +494,41 @@ async function openViewer(m, startPage = 1) {
   try { lib = await pdfjs(); } catch (err) {
     // This browser can't run PDF.js: open the PDF in the browser's own viewer instead
     console.error(err);
+    reportError('Reader: ' + (err && err.message || err));
     location.href = fileUrl(m);
     return;
   }
-  try {
-    const doc = await lib.getDocument({ url: fileUrl(m), ...PDF_OPTS }).promise;
-    if (gen !== V.gen) { doc.destroy(); return; }
-    V.doc = doc;
-    V.count = doc.numPages;
-    m.pages = doc.numPages;
-    const first = await doc.getPage(1);
-    V.size = first.getViewport({ scale: 1 });
-    layoutBook();
-    V.page = Math.min(Math.max(1, startPage), V.count);
-    await showPage(V.page);
-    prefetch();
-    saveOffline(m, doc);
-  } catch (err) {
-    if (gen !== V.gen) return;
-    console.error(err);
-    spinner.hidden = true;
-    toast(navigator.onLine ? 'క్షమించండి, ఈ భాగం తెరవలేకపోయాం.'
-      : 'ఇంటర్నెట్ లేదు. ఆఫ్‌లైన్‌లో చదవాలంటే ఒకసారి ఇంటర్నెట్ ఉన్నప్పుడు తెరవండి.', 4500);
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const doc = await lib.getDocument({ url: fileUrl(m), ...PDF_OPTS }).promise;
+      if (gen !== V.gen) { doc.destroy(); return; }
+      V.doc = doc;
+      V.count = doc.numPages;
+      m.pages = doc.numPages;
+      const first = await doc.getPage(1);
+      V.size = first.getViewport({ scale: 1 });
+      layoutBook();
+      V.page = Math.min(Math.max(1, startPage), V.count);
+      await showPage(V.page);
+      prefetch();
+      saveOffline(m, doc);
+      return;
+    } catch (err) {
+      if (gen !== V.gen) return;
+      console.error(err);
+      reportError(`Reader (PDF.js ${lib.version || '?'}): ${err && err.message || err}`);
+      if (!navigator.onLine) {
+        spinner.hidden = true;
+        toast('ఇంటర్నెట్ లేదు. ఆఫ్‌లైన్‌లో చదవాలంటే ఒకసారి ఇంటర్నెట్ ఉన్నప్పుడు తెరవండి.', 4500);
+        return;
+      }
+      // PDF.js 4 loaded but couldn't run here (older Safari): try PDF.js 3 once, then the browser's own viewer
+      if (attempt === 0 && String(lib.version || '').startsWith('4')) {
+        try { lib = pdfjsLib = await loadOldPdfjs(); continue; } catch (e) { reportError(String(e && e.message || e)); }
+      }
+      location.href = fileUrl(m);
+      return;
+    }
   }
 }
 
