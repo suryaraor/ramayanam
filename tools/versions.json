@@ -1,0 +1,117 @@
+[
+ {
+  "id": "v1",
+  "date": "2026-11-26",
+  "commit": "443e707",
+  "title": "First spelling pass: 817 spelling mistakes corrected",
+  "punct": {}
+ },
+ {
+  "id": "v2",
+  "date": "2026-11-28",
+  "commit": "5207713",
+  "title": "Spaces after full stops and commas, merged words split, stray full stops removed, quoted shlokas highlighted",
+  "punct": {
+   "06-yuddha-kanda-part-2": {
+    "space after full stop": 7,
+    "space before full stop or comma": 52,
+    "space after comma": 1
+   },
+   "03-ayodhya-kanda-part-2": {
+    "space after full stop": 12,
+    "space before full stop or comma": 54,
+    "space after comma": 1
+   },
+   "04-aranya-kishkindha-sundara-kanda": {
+    "space after full stop": 23,
+    "space before full stop or comma": 296,
+    "space after comma": 15
+   },
+   "01-bala-kanda": {
+    "space after full stop": 64,
+    "doubled full stop": 2,
+    "space before full stop or comma": 60,
+    "space after comma": 17
+   },
+   "05-yuddha-kanda-part-1": {
+    "space after full stop": 13,
+    "space before full stop or comma": 288,
+    "space after comma": 12
+   },
+   "02-ayodhya-kanda-part-1": {
+    "space after full stop": 16,
+    "space before full stop or comma": 93,
+    "space after comma": 1
+   }
+  }
+ },
+ {
+  "id": "v3",
+  "date": "2026-11-28",
+  "commit": "8be8371",
+  "title": "Proofreading format pass: quote marks, spacing, ం typed as a Latin o",
+  "punct": {
+   "06-yuddha-kanda-part-2": {
+    "quote mark facing the wrong way": 1,
+    "space before punctuation removed": 1,
+    "space at end of paragraph": 56,
+    "space inside quote marks removed": 4,
+    "space after opening bracket removed": 1,
+    "space added outside quote marks": 4
+   },
+   "03-ayodhya-kanda-part-2": {
+    "space before punctuation removed": 1,
+    "space at end of paragraph": 136,
+    "double space": 47,
+    "space inside quote marks removed": 1
+   },
+   "04-aranya-kishkindha-sundara-kanda": {
+    "doubled full stop": 1,
+    "space before punctuation removed": 10,
+    "space at end of paragraph": 31,
+    "double space": 94,
+    "straight quote made curly": 2,
+    "space inside quote marks removed": 1,
+    "space after opening bracket removed": 3,
+    "Latin o / zero typed for ం (anusvara)": 2,
+    "space added after punctuation": 1,
+    "dash made consistent": 1
+   },
+   "02-ayodhya-kanda-part-1": {
+    "space at end of paragraph": 151,
+    "double space": 926,
+    "space inside quote marks removed": 6,
+    "space added outside quote marks": 2
+   },
+   "01-bala-kanda": {
+    "quote mark facing the wrong way": 1,
+    "space before punctuation removed": 2,
+    "space at end of paragraph": 173,
+    "double space": 65,
+    "space inside quote marks removed": 3,
+    "space added after closing mark": 3,
+    "space added outside quote marks": 8
+   },
+   "05-yuddha-kanda-part-1": {
+    "doubled full stop": 1,
+    "quote mark corrected": 2,
+    "space before punctuation removed": 6,
+    "space at end of paragraph": 160,
+    "double space": 28,
+    "space inside quote marks removed": 5,
+    "space after opening bracket removed": 1,
+    "Latin o / zero typed for ం (anusvara)": 4,
+    "space added after closing mark": 1,
+    "quote mark facing the wrong way": 2,
+    "space added outside quote marks": 2
+   }
+  }
+ },
+ {
+  "id": "v4",
+  "date": "2026-11-28",
+  "commit": "f7e4d26",
+  "title": "83 approved spelling and quote-mark suggestions",
+  "punct": {}
+ }
+]

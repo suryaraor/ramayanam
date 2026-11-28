@@ -4,7 +4,9 @@ Reads tools/corrections.json (written by tools/proofread.py), prints a copy of e
 a tiny marker next to every corrected word, reads the markers back with poppler's pdftotext to
 get page numbers, then writes corrections/index.html. The published PDFs are not touched.
 
-    python tools/corrections-page.py
+    python tools/corrections-page.py ["what changed in this version"]
+
+Entries without a 'version' become a new version in tools/versions.json, shown first on the page.
 """
 import html
 import importlib.util
@@ -12,7 +14,9 @@ import json
 import re
 import subprocess
 import tempfile
-from collections import defaultdict
+import sys
+from collections import Counter, defaultdict
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -58,45 +62,88 @@ def find_pages(part, entries, exe, tmp):
             c['page'] = near[0][2] if near else None
 
 
-def write_page(corr):
+VERSIONS = ROOT / 'tools' / 'versions.json'
+LABELS = {'space after full stop': 'spaces added after a full stop', 'space after comma': 'spaces added after a comma',
+          'space before full stop or comma': 'spaces removed before a full stop or comma', 'doubled full stop': 'doubled full stops',
+          'space before punctuation removed': 'spaces removed before ? ! ) and quote marks',
+          'quote mark facing the wrong way': 'quote marks turned the right way', 'quote mark corrected': 'quote marks turned the right way at the end of a quotation',
+          'straight quote made curly': 'straight quotes made curly', 'space inside quote marks removed': 'spaces removed inside quote marks',
+          'space added outside quote marks': 'spaces added outside quote marks', 'dash made consistent': 'dashes made consistent',
+          'double space': 'double spaces made single'}
+
+
+def new_version(corr, note):
+    """Entries without a version become a new version; its punctuation is what tidy-summary gained since the last one."""
+    versions = json.loads(VERSIONS.read_text(encoding='utf8')) if VERSIONS.exists() else []
+    fresh = [c for c in corr if not c.get('version')]
+    spath = ROOT / 'tools' / 'tidy-summary.json'
+    total = json.loads(spath.read_text(encoding='utf8')) if spath.exists() else {}
+    seen = defaultdict(Counter)
+    for v in versions:
+        for part, d in v.get('punct', {}).items():
+            seen[part].update(d)
+    punct = {}
+    for part, d in total.items():
+        gained = {k: n - seen[part][k] for k, n in d.items() if n - seen[part][k] > 0}
+        if gained:
+            punct[part] = gained
+    if not fresh and not punct:
+        return versions
+    vid = f'v{len(versions) + 1}'
+    for c in fresh:
+        c['version'] = vid
+    versions.append({'id': vid, 'date': date.today().isoformat(), 'commit': '', 'title': note or 'Corrections', 'punct': punct})
+    VERSIONS.write_text(json.dumps(versions, ensure_ascii=False, indent=1), encoding='utf8')
+    print(f'new version {vid}: {len(fresh)} entries')
+    return versions
+
+
+def table(rows):
+    body = []
+    for c in sorted(rows, key=lambda c: (c.get('page') or 9999, c['para'])):
+        cnt = f' <span class="x">×{c["count"]}</span>' if c.get('count', 1) > 1 else ''
+        body.append(f'<tr><td class="pg">{c.get("page") or "–"}</td><td class="old">{html.escape(c["old"])}</td>'
+                    f'<td class="arrow">→</td><td class="new">{html.escape(c["new"])}{cnt}</td><td class="why">{html.escape(c["why"])}</td></tr>')
+    return ('<table><thead><tr><th>Page</th><th>Was</th><th></th><th>Now</th><th>Rule</th></tr></thead><tbody>\n'
+            + '\n'.join(body) + '\n</tbody></table>')
+
+
+def write_page(corr, versions):
     names = bp.books()
-    by_part = defaultdict(list)
-    for c in corr:
-        by_part[c['part']].append(c)
     total = sum(c.get('count', 1) for c in corr)
     sections, toc = [], []
-    spath = ROOT / 'tools' / 'tidy-summary.json'
-    punct = json.loads(spath.read_text(encoding='utf8')) if spath.exists() else {}
-    labels = {'space after full stop': 'spaces added after a full stop', 'space after comma': 'spaces added after a comma',
-              'space before full stop or comma': 'spaces removed before a full stop or comma', 'doubled full stop': 'doubled full stops',
-              'space before punctuation removed': 'spaces removed before ? ! ) and quote marks',
-              'quote mark facing the wrong way': 'quote marks turned the right way', 'quote mark corrected': 'quote marks turned the right way at the end of a quotation',
-              'straight quote made curly': 'straight quotes made curly', 'space inside quote marks removed': 'spaces removed inside quote marks',
-              'space added outside quote marks': 'spaces added outside quote marks', 'dash made consistent': 'dashes made consistent',
-              'double space': 'double spaces made single'}
-    for part in sorted(by_part):
-        title, en = names.get(part, (part, ''))
-        rows = sorted(by_part[part], key=lambda c: (c.get('page') or 9999, c['para']))
+    for v in reversed(versions):   # newest first
+        rows = [c for c in corr if c.get('version') == v['id']]
         n = sum(c.get('count', 1) for c in rows)
-        toc.append(f'<li><a href="#{part}">{html.escape(title)}</a> <span class="n">{n}</span></li>')
-        body = []
+        when = date.fromisoformat(v['date']).strftime('%d %b %Y').lstrip('0')
+        commit = f' · <code>{html.escape(v["commit"])}</code>' if v.get('commit') else ''
+        latest = ' <span class="latest">Latest</span>' if v is versions[-1] else ''
+        toc.append(f'<li><a href="#{v["id"]}">{v["id"]}</a> <span class="n">{when} · {n}</span></li>')
+        by_part = defaultdict(list)
         for c in rows:
-            cnt = f' <span class="x">×{c["count"]}</span>' if c.get('count', 1) > 1 else ''
-            body.append(f'<tr><td class="pg">{c.get("page") or "–"}</td><td class="old">{html.escape(c["old"])}</td>'
-                        f'<td class="arrow">→</td><td class="new">{html.escape(c["new"])}{cnt}</td><td class="why">{html.escape(c["why"])}</td></tr>')
-        pdf = f'../data/{part}.pdf'
-        pn = punct.get(part, {})
-        extra = ', '.join(f'{pn[k]} {v}' for k, v in labels.items() if pn.get(k))
-        extra = f'<p class="punct">Punctuation, not listed below: {extra}.</p>' if extra else ''
-        sections.append(f'''<section id="{part}"><h2>{html.escape(title)} <span class="en">{html.escape(en)} · {n} corrections</span></h2>
-<p class="open"><a href="../#read={html.escape('data/' + part + '.pdf')}">Open this part</a> · <a href="{pdf}">PDF</a></p>
-{extra}
-<table><thead><tr><th>Page</th><th>Was</th><th></th><th>Now</th><th>Rule</th></tr></thead><tbody>
-{chr(10).join(body)}
-</tbody></table></section>''')
+            by_part[c['part']].append(c)
+        parts = []
+        for part in sorted(set(by_part) | set(v.get('punct', {}))):
+            title, en = names.get(part, (part, ''))
+            pn = v.get('punct', {}).get(part, {})
+            extra = ', '.join(f'{pn[k]} {lab}' for k, lab in LABELS.items() if pn.get(k))
+            extra = f'<p class="punct">Punctuation, not listed: {extra}.</p>' if extra else ''
+            pr = by_part.get(part, [])
+            count = sum(c.get('count', 1) for c in pr)
+            link = html.escape('data/' + part + '.pdf')
+            parts.append(f'<details class="part" open><summary><span class="pt">{html.escape(title)}</span> '
+                         f'<span class="en">{html.escape(en)} · {count} corrections</span> <a class="open" href="../#read={link}">Open</a></summary>\n'
+                         f'{extra}\n{table(pr) if pr else ""}</details>')
+        sections.append(f'<section id="{v["id"]}" class="ver"><header class="vh"><span class="vid">{v["id"]}</span>{latest}\n'
+                        f'<h2>{html.escape(v["title"])}</h2><p class="vm">{when} · {n} corrections{commit}</p></header>\n'
+                        + '\n'.join(parts) + '</section>')
     out = ROOT / 'corrections' / 'index.html'
     out.parent.mkdir(exist_ok=True)
-    out.write_text(f'''<!doctype html>
+    out.write_text(PAGE.format(total=total, nver=len(versions), toc=''.join(toc), sections='\n'.join(sections)), encoding='utf8')
+    print(f'corrections/index.html: {total} fixes, {len(versions)} versions')
+
+
+PAGE = '''<!doctype html>
 <html lang="te"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spelling corrections · శ్రీమద్రామాయణము</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,33 +158,41 @@ a {{ color:var(--accent); }}
 h1 {{ font-family:Ramabhadra,"Noto Sans Telugu",sans-serif; font-weight:400; color:var(--accent); font-size:clamp(28px,7vw,44px); margin:8px 0 4px; line-height:1.3; }}
 .lede {{ color:var(--ink2); margin:0 0 18px; }}
 .toc {{ list-style:none; padding:0; margin:0 0 24px; display:flex; flex-wrap:wrap; gap:8px; }}
-.toc li {{ background:var(--card); border:1px solid var(--rule); border-radius:999px; padding:4px 12px; }}
-.toc a {{ text-decoration:none; }} .n {{ color:var(--ink2); font-size:13px; margin-left:4px; }}
-section {{ background:var(--card); border:1px solid var(--rule); border-radius:12px; padding:16px; margin:0 0 22px; }}
-h2 {{ font-family:Ramabhadra,"Noto Sans Telugu",sans-serif; font-weight:400; margin:0; font-size:22px; line-height:1.4; }}
-h2 .en {{ display:block; font-family:system-ui,sans-serif; font-size:13px; color:var(--ink2); }}
-.open {{ margin:4px 0 10px; font-size:14px; }}
-table {{ width:100%; border-collapse:collapse; font-size:15px; }}
-th {{ text-align:left; font:600 12px system-ui,sans-serif; color:var(--ink2); text-transform:uppercase; letter-spacing:.06em; border-bottom:1px solid var(--rule); padding:6px 6px; }}
+.toc li {{ background:var(--card); border:1px solid var(--rule); border-radius:999px; padding:4px 12px; font:600 14px system-ui,sans-serif; }}
+.toc a {{ text-decoration:none; }} .n {{ color:var(--ink2); font-weight:400; font-size:13px; margin-left:4px; }}
+.ver {{ background:var(--card); border:1px solid var(--rule); border-radius:12px; padding:16px; margin:0 0 22px; scroll-margin-top:12px; }}
+.vh {{ border-bottom:1px solid var(--rule); padding-bottom:10px; margin-bottom:6px; }}
+.vid {{ font:700 13px system-ui,sans-serif; letter-spacing:.04em; background:var(--ink); color:var(--paper); border-radius:6px; padding:2px 8px; }}
+.latest {{ font:600 12px system-ui,sans-serif; color:var(--accent); border:1px solid var(--accent); border-radius:99px; padding:1px 8px; margin-left:6px; }}
+h2 {{ font-family:system-ui,sans-serif; font-weight:600; margin:8px 0 2px; font-size:18px; line-height:1.4; }}
+.vm {{ margin:0; color:var(--ink2); font:13px system-ui,sans-serif; }}
+code {{ font:12px ui-monospace,Consolas,monospace; }}
+.part {{ border-top:1px solid var(--rule); padding:8px 0; }}
+.vh + .part {{ border-top:0; }}
+.part summary {{ cursor:pointer; display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; }}
+.pt {{ font-family:Ramabhadra,"Noto Sans Telugu",sans-serif; font-size:19px; }}
+.part .en {{ font:13px system-ui,sans-serif; color:var(--ink2); }}
+.part .open {{ font:13px system-ui,sans-serif; margin-left:auto; }}
+table {{ width:100%; border-collapse:collapse; font-size:15px; margin-top:6px; }}
+th {{ text-align:left; font:600 12px system-ui,sans-serif; color:var(--ink2); text-transform:uppercase; letter-spacing:.06em; border-bottom:1px solid var(--rule); padding:6px; }}
 td {{ padding:6px; border-bottom:1px solid var(--rule); vertical-align:top; }}
 tr:last-child td {{ border-bottom:0; }}
-.pg {{ font:600 14px system-ui,sans-serif; color:var(--ink2); width:3.2em; }}
+.pg {{ font:600 14px system-ui,sans-serif; color:var(--ink2); width:3.2em; font-variant-numeric:tabular-nums; }}
 .old {{ color:var(--old); text-decoration:line-through; text-decoration-thickness:1px; }}
 .new {{ color:var(--new); font-weight:600; }}
 .arrow {{ color:var(--ink2); width:1.2em; }}
 .why {{ color:var(--ink2); font-size:13px; }}
-.punct {{ color:var(--ink2); font:13px/1.5 system-ui,sans-serif; margin:0 0 10px; }}
+.punct {{ color:var(--ink2); font:13px/1.5 system-ui,sans-serif; margin:6px 0; }}
 .x {{ font:500 12px system-ui,sans-serif; color:var(--ink2); }}
 @media (max-width:560px) {{ .why {{ display:none; }} th:last-child {{ display:none; }} }}
 </style></head><body><div class="wrap">
 <p><a href="../">← శ్రీమద్రామాయణము</a></p>
 <h1>అక్షర దోషాల సవరణలు</h1>
-<p class="lede">Spelling corrections · {total} fixes across {len(by_part)} parts. Page numbers are the page numbers printed at the bottom of each PDF page.</p>
-<ul class="toc">{''.join(toc)}</ul>
-{chr(10).join(sections)}
+<p class="lede">Spelling corrections · {total} fixes in {nver} versions, newest first. Page numbers are the page numbers printed at the bottom of each page of the current PDFs.</p>
+<ul class="toc">{toc}</ul>
+{sections}
 </div></body></html>
-''', encoding='utf8')
-    print(f'corrections/index.html: {total} fixes')
+'''
 
 
 def main():
@@ -152,8 +207,9 @@ def main():
             find_pages(part, entries, exe, tmp)
             missing = sum(1 for c in entries if not c.get('page'))
             print(f'{part}: {len(entries)} entries, {missing} without a page')
+    versions = new_version(corr, ' '.join(x for x in sys.argv[1:] if not x.startswith('--')) or None)
     path.write_text(json.dumps(corr, ensure_ascii=False, indent=1), encoding='utf8')
-    write_page(corr)
+    write_page(corr, versions)
 
 
 if __name__ == '__main__':
