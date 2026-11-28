@@ -3,36 +3,76 @@
   "doubled full stop": 2,
   "space before full stop or comma": 60,
   "space after full stop": 64,
-  "space after comma": 17
+  "space after comma": 17,
+  "space at end of paragraph": 173,
+  "double space": 65,
+  "space added after closing mark": 3,
+  "space inside quote marks removed": 3,
+  "space added outside quote marks": 8,
+  "space before punctuation removed": 2,
+  "quote mark facing the wrong way": 1
  },
  "02-ayodhya-kanda-part-1": {
   "doubled full stop": 0,
   "space before full stop or comma": 93,
   "space after full stop": 16,
-  "space after comma": 1
+  "space after comma": 1,
+  "double space": 926,
+  "space at end of paragraph": 151,
+  "space inside quote marks removed": 6,
+  "space added outside quote marks": 2
  },
  "03-ayodhya-kanda-part-2": {
   "doubled full stop": 0,
   "space before full stop or comma": 54,
   "space after full stop": 12,
-  "space after comma": 1
+  "space after comma": 1,
+  "double space": 47,
+  "space at end of paragraph": 136,
+  "space before punctuation removed": 1,
+  "space inside quote marks removed": 1
  },
  "04-aranya-kishkindha-sundara-kanda": {
-  "doubled full stop": 0,
+  "doubled full stop": 1,
   "space before full stop or comma": 296,
   "space after full stop": 23,
-  "space after comma": 15
+  "space after comma": 15,
+  "space at end of paragraph": 31,
+  "space before punctuation removed": 10,
+  "space added after punctuation": 1,
+  "double space": 94,
+  "dash made consistent": 1,
+  "space after opening bracket removed": 3,
+  "Latin o / zero typed for ం (anusvara)": 2,
+  "straight quote made curly": 2,
+  "space inside quote marks removed": 1
  },
  "05-yuddha-kanda-part-1": {
-  "doubled full stop": 0,
+  "doubled full stop": 1,
   "space before full stop or comma": 288,
   "space after full stop": 13,
-  "space after comma": 12
+  "space after comma": 12,
+  "space at end of paragraph": 160,
+  "double space": 28,
+  "space before punctuation removed": 6,
+  "space after opening bracket removed": 1,
+  "quote mark corrected": 2,
+  "space inside quote marks removed": 5,
+  "quote mark facing the wrong way": 2,
+  "space added outside quote marks": 2,
+  "Latin o / zero typed for ం (anusvara)": 4,
+  "space added after closing mark": 1
  },
  "06-yuddha-kanda-part-2": {
   "doubled full stop": 0,
   "space before full stop or comma": 52,
   "space after full stop": 7,
-  "space after comma": 1
+  "space after comma": 1,
+  "space at end of paragraph": 56,
+  "space added outside quote marks": 4,
+  "space before punctuation removed": 1,
+  "space after opening bracket removed": 1,
+  "quote mark facing the wrong way": 1,
+  "space inside quote marks removed": 4
  }
 }

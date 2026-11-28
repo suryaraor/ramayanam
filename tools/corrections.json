@@ -8710,5 +8710,59 @@
   "why": "రెండు పదాల మధ్య ఖాళీ",
   "count": 1,
   "page": 6
+ },
+ {
+  "part": "04-aranya-kishkindha-sundara-kanda",
+  "para": 82,
+  "old": "నన్నేమాత్రo",
+  "new": "నన్నేమాత్రం",
+  "why": "ం typed as Latin o",
+  "count": 1,
+  "page": 33
+ },
+ {
+  "part": "04-aranya-kishkindha-sundara-kanda",
+  "para": 302,
+  "old": "ప్రకాశిoచెను",
+  "new": "ప్రకాశించెను",
+  "why": "ం typed as Latin o",
+  "count": 1,
+  "page": 130
+ },
+ {
+  "part": "05-yuddha-kanda-part-1",
+  "para": 122,
+  "old": "ఎదుర్కొoదును",
+  "new": "ఎదుర్కొందును",
+  "why": "ం typed as Latin o",
+  "count": 1,
+  "page": 54
+ },
+ {
+  "part": "05-yuddha-kanda-part-1",
+  "para": 136,
+  "old": "ఏనుగులనెక్కిoచి",
+  "new": "ఏనుగులనెక్కించి",
+  "why": "ం typed as Latin o",
+  "count": 1,
+  "page": 64
+ },
+ {
+  "part": "05-yuddha-kanda-part-1",
+  "para": 137,
+  "old": "భోజనo",
+  "new": "భోజనం",
+  "why": "ం typed as Latin o",
+  "count": 1,
+  "page": 64
+ },
+ {
+  "part": "05-yuddha-kanda-part-1",
+  "para": 154,
+  "old": "నరాoతకులు",
+  "new": "నరాంతకులు",
+  "why": "ం typed as Latin o",
+  "count": 1,
+  "page": 73
  }
 ]

@@ -9,7 +9,7 @@
  *
  * Bump VERSION whenever a shell file changes so readers pick up the update.
  */
-const VERSION = 'r8';
+const VERSION = 'r9';
 const SHELL = `ram-shell-${VERSION}`;
 const RUNTIME = 'ram-runtime';
 const ISSUES = 'ram-parts';

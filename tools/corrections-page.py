@@ -68,7 +68,12 @@ def write_page(corr):
     spath = ROOT / 'tools' / 'tidy-summary.json'
     punct = json.loads(spath.read_text(encoding='utf8')) if spath.exists() else {}
     labels = {'space after full stop': 'spaces added after a full stop', 'space after comma': 'spaces added after a comma',
-              'space before full stop or comma': 'spaces removed before a full stop or comma', 'doubled full stop': 'doubled full stops'}
+              'space before full stop or comma': 'spaces removed before a full stop or comma', 'doubled full stop': 'doubled full stops',
+              'space before punctuation removed': 'spaces removed before ? ! ) and quote marks',
+              'quote mark facing the wrong way': 'quote marks turned the right way', 'quote mark corrected': 'quote marks turned the right way at the end of a quotation',
+              'straight quote made curly': 'straight quotes made curly', 'space inside quote marks removed': 'spaces removed inside quote marks',
+              'space added outside quote marks': 'spaces added outside quote marks', 'dash made consistent': 'dashes made consistent',
+              'double space': 'double spaces made single'}
     for part in sorted(by_part):
         title, en = names.get(part, (part, ''))
         rows = sorted(by_part[part], key=lambda c: (c.get('page') or 9999, c['para']))
