@@ -184,7 +184,9 @@ h2 { font-family: 'Ramabhadra', 'Noto Sans Telugu', sans-serif; font-weight: 400
 h2:first-child { break-before: auto; }
 .eyebrow { text-align: center; color: #9a7a55; font-size: 12pt; margin: 0; break-before: page; break-after: avoid; }
 .eyebrow + h2 { break-before: auto; }
-p { margin: 0 0 4.2mm; text-align: start; orphans: 2; widows: 2; }
+p { margin: 0 0 4.2mm; text-align: justify; text-justify: inter-word; text-indent: 2.2em; orphans: 2; widows: 2; }
+.eyebrow, .end, .meaning, .chant, .verse, .cover p { text-indent: 0; }
+.meaning { text-align: justify; }
 .verse { margin: 5mm 2mm 6mm; padding: 3.5mm 4mm; border-left: 2.5pt solid #e5953a; background: #fdf3e3; color: #6b3410; font-size: 13.5pt; line-height: 1.8; text-align: center; break-inside: avoid; }
 .end { text-align: center; font-family: 'Ramabhadra', 'Noto Sans Telugu', sans-serif; color: #a8460c; font-size: 16pt; margin: 9mm 0 3mm; }
 .end::before { content: '❀  '; } .end::after { content: '  ❀'; }
@@ -239,6 +241,12 @@ def main():
             except (OSError, subprocess.CalledProcessError):
                 print('  (pdftoppm not found: no cover image made)')
             print(f'{pdf.name}  {pdf.stat().st_size // 1024} KB')
+    if not only:   # the whole book as one PDF, for the download button on the home page
+        book = ROOT / 'book' / 'srimad-ramayanam.pdf'
+        book.parent.mkdir(exist_ok=True)
+        parts = [str(OUT / f'{d.stem}.pdf') for d in sorted(SRC.glob('[0-9][0-9]-*.docx'))]
+        subprocess.run(['pdfunite', *parts, str(book)], check=True)
+        print(f'{book.name}  {book.stat().st_size // 1024} KB')
 
 
 if __name__ == '__main__':

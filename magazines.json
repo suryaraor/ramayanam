@@ -1,14 +1,14 @@
 {
-  "generated": "2026-11-28T13:59:25.678Z",
+  "generated": "2026-11-28T17:10:55.960Z",
   "magazines": [
     {
       "file": "data/01-bala-kanda.pdf",
       "name": "01-bala-kanda.pdf",
       "title": "బాల కాండము",
       "en": "Bala Kanda",
-      "pages": 111,
+      "pages": 112,
       "cover": "covers/01-bala-kanda.jpg",
-      "size": 1441040,
+      "size": 1447698,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -16,9 +16,9 @@
       "name": "02-ayodhya-kanda-part-1.pdf",
       "title": "అయోధ్య కాండము · ప్రథమ భాగము",
       "en": "Ayodhya Kanda, Part 1",
-      "pages": 88,
+      "pages": 89,
       "cover": "covers/02-ayodhya-kanda-part-1.jpg",
-      "size": 917149,
+      "size": 923340,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -28,7 +28,7 @@
       "en": "Ayodhya Kanda, Part 2",
       "pages": 71,
       "cover": "covers/03-ayodhya-kanda-part-2.jpg",
-      "size": 845530,
+      "size": 849486,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -36,9 +36,9 @@
       "name": "04-aranya-kishkindha-sundara-kanda.pdf",
       "title": "అరణ్య · కిష్కింధ · సుందర కాండములు",
       "en": "Aranya, Kishkindha and Sundara Kanda",
-      "pages": 208,
+      "pages": 211,
       "cover": "covers/04-aranya-kishkindha-sundara-kanda.jpg",
-      "size": 1783280,
+      "size": 1797404,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -46,9 +46,9 @@
       "name": "05-yuddha-kanda-part-1.pdf",
       "title": "యుద్ధ కాండము · ప్రథమ భాగము",
       "en": "Yuddha Kanda, Part 1",
-      "pages": 119,
+      "pages": 121,
       "cover": "covers/05-yuddha-kanda-part-1.jpg",
-      "size": 1149672,
+      "size": 1157786,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -56,9 +56,9 @@
       "name": "06-yuddha-kanda-part-2.pdf",
       "title": "యుద్ధ కాండము · ద్వితీయ భాగము",
       "en": "Yuddha Kanda, Part 2",
-      "pages": 42,
+      "pages": 43,
       "cover": "covers/06-yuddha-kanda-part-2.jpg",
-      "size": 653144,
+      "size": 655801,
       "date": "2026-11-26T18:21:46-06:00"
     }
   ]

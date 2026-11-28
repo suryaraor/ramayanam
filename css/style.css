@@ -488,6 +488,9 @@ body.reading { overflow: hidden; }
 /* ---------- Ramayanam additions ---------- */
 .masthead { background: radial-gradient(90% 120% at 50% 0%, rgba(240,138,28,.22), transparent 70%); }
 .title { font-size: clamp(40px, 11vw, 104px); font-weight: 400; line-height: 1.35; letter-spacing: 0; color: var(--accent); }
+.book-dl { margin: 22px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.book-dl .btn { padding: 10px 16px; font-size: 15px; text-decoration: none; }
+.book-sub { font-size: 13px; color: var(--ink-2); }
 .lede-en { display: block; margin-top: 8px; font-size: .88em; opacity: .8; }
 .h-en { font-family: var(--sans); font-size: .55em; font-weight: 500; color: var(--ink-2); margin-left: 6px; }
 .card h3 { line-height: 1.5; }
