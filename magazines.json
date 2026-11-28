@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-27T02:57:08.909Z",
+  "generated": "2026-11-28T13:59:25.678Z",
   "magazines": [
     {
       "file": "data/01-bala-kanda.pdf",
@@ -8,7 +8,7 @@
       "en": "Bala Kanda",
       "pages": 111,
       "cover": "covers/01-bala-kanda.jpg",
-      "size": 1434996,
+      "size": 1441040,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -18,7 +18,7 @@
       "en": "Ayodhya Kanda, Part 1",
       "pages": 88,
       "cover": "covers/02-ayodhya-kanda-part-1.jpg",
-      "size": 917426,
+      "size": 917149,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -28,7 +28,7 @@
       "en": "Ayodhya Kanda, Part 2",
       "pages": 71,
       "cover": "covers/03-ayodhya-kanda-part-2.jpg",
-      "size": 845661,
+      "size": 845530,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -36,9 +36,9 @@
       "name": "04-aranya-kishkindha-sundara-kanda.pdf",
       "title": "అరణ్య · కిష్కింధ · సుందర కాండములు",
       "en": "Aranya, Kishkindha and Sundara Kanda",
-      "pages": 209,
+      "pages": 208,
       "cover": "covers/04-aranya-kishkindha-sundara-kanda.jpg",
-      "size": 1760433,
+      "size": 1783280,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -48,7 +48,7 @@
       "en": "Yuddha Kanda, Part 1",
       "pages": 119,
       "cover": "covers/05-yuddha-kanda-part-1.jpg",
-      "size": 1150523,
+      "size": 1149672,
       "date": "2026-11-26T18:21:46-06:00"
     },
     {
@@ -58,7 +58,7 @@
       "en": "Yuddha Kanda, Part 2",
       "pages": 42,
       "cover": "covers/06-yuddha-kanda-part-2.jpg",
-      "size": 653369,
+      "size": 653144,
       "date": "2026-11-26T18:21:46-06:00"
     }
   ]

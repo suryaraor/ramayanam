@@ -1,0 +1,38 @@
+{
+ "01-bala-kanda": {
+  "doubled full stop": 2,
+  "space before full stop or comma": 60,
+  "space after full stop": 64,
+  "space after comma": 17
+ },
+ "02-ayodhya-kanda-part-1": {
+  "doubled full stop": 0,
+  "space before full stop or comma": 93,
+  "space after full stop": 16,
+  "space after comma": 1
+ },
+ "03-ayodhya-kanda-part-2": {
+  "doubled full stop": 0,
+  "space before full stop or comma": 54,
+  "space after full stop": 12,
+  "space after comma": 1
+ },
+ "04-aranya-kishkindha-sundara-kanda": {
+  "doubled full stop": 0,
+  "space before full stop or comma": 296,
+  "space after full stop": 23,
+  "space after comma": 15
+ },
+ "05-yuddha-kanda-part-1": {
+  "doubled full stop": 0,
+  "space before full stop or comma": 288,
+  "space after full stop": 13,
+  "space after comma": 12
+ },
+ "06-yuddha-kanda-part-2": {
+  "doubled full stop": 0,
+  "space before full stop or comma": 52,
+  "space after full stop": 7,
+  "space after comma": 1
+ }
+}

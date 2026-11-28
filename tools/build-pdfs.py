@@ -72,6 +72,8 @@ def kind(t):
         return 'h2'
     if len(t) < 30 and 'రామాయణ' in t:
         return 'eyebrow'
+    if len(t) < 120 and t.rstrip().endswith('భావము.') and not t.startswith('తా.'):   # end of a meaning
+        return 'meaning'
     if len(t) < 60:   # verse lines (prose paragraphs are longer)
         return 'verse'
     if t.startswith('తా.'):   # meaning (తాత్పర్యము) of the verse above
@@ -79,6 +81,45 @@ def kind(t):
     if len(t) < 120 and not re.search(r'(\.|రి)\W*$', t):   # short lines that don't end like a prose sentence
         return 'verse'
     return 'p'
+
+
+TELUGU_END = re.compile(r'(ను|ుడు|ము|ది|లు|గా|కు|ని|చి|యు|రు|డు|ల)$')
+SANSKRIT_END = re.compile(r'(ః|్|ం|ే|ాత్|ేన|స్య|ాయ|ాః|ాం|ాన్)$')
+
+
+def sanskrit(t):
+    """Share of words that end like Sanskrit and not like Telugu (a shloka scores high, prose low)."""
+    ws = re.findall(r'[ఀ-౿]+', MARK.sub('', t))
+    if len(ws) < 6:
+        return 0
+    return (sum(1 for w in ws if SANSKRIT_END.search(w)) - sum(1 for w in ws if TELUGU_END.search(w))) / len(ws)
+
+
+def half_lines(v):
+    """A shloka as half-verse lines: split at '!' and then each part near its middle."""
+    out = []
+    for part in [x.strip() for x in v.split('!') if x.strip()]:
+        if len(MARK.sub('', part)) < 45:
+            out.append(part)
+            continue
+        mid = len(part) // 2
+        cut = min((m.start() for m in re.finditer(' ', part)), key=lambda i: abs(i - mid), default=None)
+        out += [part[:cut].strip(), part[cut:].strip()] if cut else [part]
+    return out
+
+
+def embedded_verses(k, t):
+    """A shloka quoted inside a prose paragraph ("...", (...)) becomes its own highlighted verse."""
+    if k != 'p':
+        return [(k, t)]
+    for m in re.finditer(r'“([^”]{30,})”|\(([^)]{30,})\)', t):
+        v = m.group(1) or m.group(2)
+        if sanskrit(v) >= 0.3:
+            before, after = t[:m.start()].strip(), t[m.end():].strip().lstrip('. ')
+            items = [('p', before)] if before else []
+            items += [('verse', line) for line in half_lines(v)]
+            return items + (embedded_verses('p', after) if after else [])
+    return [(k, t)]
 
 
 def body_html(paras, title):
@@ -97,8 +138,8 @@ def body_html(paras, title):
             verse.clear()
 
     first = True
-    for t in paras:
-        k = kind(t)
+    items = [x for t in paras for x in embedded_verses(kind(t), t)]
+    for k, t in items:
         if k == 'verse':
             verse.append(t)
             continue

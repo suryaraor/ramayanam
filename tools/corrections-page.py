@@ -65,6 +65,10 @@ def write_page(corr):
         by_part[c['part']].append(c)
     total = sum(c.get('count', 1) for c in corr)
     sections, toc = [], []
+    spath = ROOT / 'tools' / 'tidy-summary.json'
+    punct = json.loads(spath.read_text(encoding='utf8')) if spath.exists() else {}
+    labels = {'space after full stop': 'spaces added after a full stop', 'space after comma': 'spaces added after a comma',
+              'space before full stop or comma': 'spaces removed before a full stop or comma', 'doubled full stop': 'doubled full stops'}
     for part in sorted(by_part):
         title, en = names.get(part, (part, ''))
         rows = sorted(by_part[part], key=lambda c: (c.get('page') or 9999, c['para']))
@@ -76,8 +80,12 @@ def write_page(corr):
             body.append(f'<tr><td class="pg">{c.get("page") or "–"}</td><td class="old">{html.escape(c["old"])}</td>'
                         f'<td class="arrow">→</td><td class="new">{html.escape(c["new"])}{cnt}</td><td class="why">{html.escape(c["why"])}</td></tr>')
         pdf = f'../data/{part}.pdf'
+        pn = punct.get(part, {})
+        extra = ', '.join(f'{pn[k]} {v}' for k, v in labels.items() if pn.get(k))
+        extra = f'<p class="punct">Punctuation, not listed below: {extra}.</p>' if extra else ''
         sections.append(f'''<section id="{part}"><h2>{html.escape(title)} <span class="en">{html.escape(en)} · {n} corrections</span></h2>
 <p class="open"><a href="../#read={html.escape('data/' + part + '.pdf')}">Open this part</a> · <a href="{pdf}">PDF</a></p>
+{extra}
 <table><thead><tr><th>Page</th><th>Was</th><th></th><th>Now</th><th>Rule</th></tr></thead><tbody>
 {chr(10).join(body)}
 </tbody></table></section>''')
@@ -113,6 +121,7 @@ tr:last-child td {{ border-bottom:0; }}
 .new {{ color:var(--new); font-weight:600; }}
 .arrow {{ color:var(--ink2); width:1.2em; }}
 .why {{ color:var(--ink2); font-size:13px; }}
+.punct {{ color:var(--ink2); font:13px/1.5 system-ui,sans-serif; margin:0 0 10px; }}
 .x {{ font:500 12px system-ui,sans-serif; color:var(--ink2); }}
 @media (max-width:560px) {{ .why {{ display:none; }} th:last-child {{ display:none; }} }}
 </style></head><body><div class="wrap">
