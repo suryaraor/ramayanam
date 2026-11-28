@@ -1,6 +1,6 @@
 # శ్రీమద్రామాయణము · Srimad Ramayanam
 
-Srimad Ramayanam in Telugu prose, kanda by kanda, published at **https://suryarao.in/ramayanam/**.
+Srimad Ramayanam in Telugu prose by **Madhusudan Rao Santapuri**, kanda by kanda, published at **https://suryarao.in/ramayanam/**.
 It uses the same reader as the [magazine](https://suryarao.in/magazine/) site: tap a part to read it
 full screen with page turns, download it, or share a link.
 

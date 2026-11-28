@@ -137,9 +137,28 @@ def write_page(corr, versions):
         sections.append(f'<section id="{v["id"]}" class="ver"><header class="vh"><span class="vid">{v["id"]}</span>{latest}\n'
                         f'<h2>{html.escape(v["title"])}</h2><p class="vm">{when} · {n} corrections{commit}</p></header>\n'
                         + '\n'.join(parts) + '</section>')
+    extra = ''
+    pr = ROOT / 'tools' / 'read-progress.json'
+    if pr.exists():
+        st = json.loads(pr.read_text(encoding='utf8'))
+        fin = [names.get(k, (k, ''))[0] for k in st.get('finished', [])]
+        now = names.get(st['part'], (st['part'], ''))[0] if st.get('part') else ''
+        extra += ('<section class="ver"><h2>పూర్తి పఠనం (Careful read-through)</h2><p class="vm">'
+                  + f'{len(fin)} of 6 parts read word by word'
+                  + (': ' + html.escape(', '.join(fin)) if fin else '')
+                  + (f'. Now reading {html.escape(now)}, from page {st["page"]}.' if now else '. All parts read.') + '</p></section>')
+    dpath = ROOT / 'tools' / 'doubts.json'
+    doubts = json.loads(dpath.read_text(encoding='utf8')) if dpath.exists() else []
+    if doubts:
+        rows = ''.join(f'<tr><td class="pg">{d.get("page") or "–"}</td><td>{html.escape(names.get(d["part"], (d["part"], ""))[0])}</td>'
+                       f'<td>{html.escape(d["word"])}</td><td class="why">{html.escape(d.get("note", ""))}</td></tr>'
+                       for d in doubts)
+        extra += ('<section class="ver" id="doubts"><h2>సందేహాలు (Words to check, not changed)</h2>'
+                  "<p class=\"vm\">Words that may be wrong but could be the author's choice. They are left as written.</p>"
+                  '<table><thead><tr><th>Page</th><th>Part</th><th>Word</th><th>Why</th></tr></thead><tbody>' + rows + '</tbody></table></section>')
     out = ROOT / 'corrections' / 'index.html'
     out.parent.mkdir(exist_ok=True)
-    out.write_text(PAGE.format(total=total, nver=len(versions), toc=''.join(toc), sections='\n'.join(sections)), encoding='utf8')
+    out.write_text(PAGE.format(total=total, nver=len(versions), toc=''.join(toc), sections=extra + '\n'.join(sections)), encoding='utf8')
     print(f'corrections/index.html: {total} fixes, {len(versions)} versions')
 
 

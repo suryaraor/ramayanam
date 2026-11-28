@@ -180,6 +180,8 @@ body { margin: 0; font-family: 'Noto Sans Telugu', 'Nirmala UI', sans-serif; fon
 .cover .en { font-family: Georgia, serif; font-style: italic; font-size: 13pt; margin-top: 5mm; opacity: .92; }
 .cover .bow { width: 46mm; opacity: .85; }
 .cover .foot { font-size: 11pt; opacity: .9; }
+.cover .by { font-size: 11pt; line-height: 1.6; margin-bottom: 6mm; opacity: .95; }
+.cover .by b { font-family: Georgia, serif; font-weight: 400; font-size: 14pt; letter-spacing: .02em; }
 h2 { font-family: 'Ramabhadra', 'Noto Sans Telugu', sans-serif; font-weight: 400; font-size: 21pt; color: #a8460c; text-align: center; margin: 4mm 0 6mm; break-before: page; break-after: avoid; }
 h2:first-child { break-before: auto; }
 .eyebrow { text-align: center; color: #9a7a55; font-size: 12pt; margin: 0; break-before: page; break-after: avoid; }
@@ -206,7 +208,7 @@ def page_html(title, en, body):
 <style>{CSS}</style></head><body>
 <section class="cover"><div><div class="om">ॐ</div><div class="series">శ్రీమద్రామాయణము</div></div>
 <div><h1>{html.escape(title).replace(' · ', '<br>')}</h1><div class="rule"></div><div class="en">{html.escape(en)}</div></div>
-<div>{BOW}<div class="foot">శ్రీ రామ జయ రామ జయ జయ రామ</div></div></section>
+<div><div class="by">వచన రచన<br><b>Madhusudan Rao Santapuri</b></div>{BOW}<div class="foot">శ్రీ రామ జయ రామ జయ జయ రామ</div></div></section>
 <main>{body}</main></body></html>"""
 
 
