@@ -18,8 +18,7 @@
     // Shows script errors at the bottom of the page (helps find problems on phones and tablets without a console)
     window.onerror = function (msg, src, line) {
       var el = document.getElementById('jsError');
-      if (el) { el.hidden = false; el.textContent += 'Error: ' + msg + ' (' + String(src || '').split('/').pop() + ':' + line + ')
-'; }
+      if (el) { el.hidden = false; el.textContent += 'Error: ' + msg + ' (' + String(src || '').split('/').pop() + ':' + line + ')\n'; }
     };
   </script>
   <script type="module" src="js/app.js"></script>
